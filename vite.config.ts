@@ -3,11 +3,9 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
+// Set base path for deployment
 export default defineConfig(({ mode }) => ({
-  // ✅ Important for GitHub Pages or Netlify deployments
-  base: "/Nexgig/", // Replace "Nexgig" with your repo name if different
-
+  base: "/",  // ✅ use "/" for Netlify, or "/Nexgig/" for GitHub Pages
   server: {
     host: "::",
     port: 8080,
