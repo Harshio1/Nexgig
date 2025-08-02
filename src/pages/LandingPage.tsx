@@ -41,7 +41,7 @@ const LandingPage = () => {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <Link to="/" className="text-2xl font-bold text-primary">
-                FreelanceNest
+                NextGig
               </Link>
             </div>
             
@@ -119,7 +119,7 @@ const LandingPage = () => {
             </h1>
             <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
               Connect with top-tier freelancers and get your projects done efficiently. 
-              From web development to creative design, find the perfect match for your needs.
+              From web development to creative design, find the perfect match for your next gig.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link to="/auth">
@@ -193,7 +193,7 @@ const LandingPage = () => {
             Ready to get started?
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Join thousands of freelancers and clients who trust FreelanceNest
+            Join thousands of freelancers and clients who trust NextGig
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link to="/auth">
@@ -215,10 +215,10 @@ const LandingPage = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <Link to="/" className="text-2xl font-bold text-primary">
-              FreelanceNest
+              NextGig
             </Link>
             <p className="mt-4 text-muted-foreground">
-              © 2024 FreelanceNest. All rights reserved.
+              © 2024 NextGig. All rights reserved.
             </p>
           </div>
         </div>
