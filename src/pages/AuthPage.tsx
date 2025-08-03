@@ -61,7 +61,7 @@ const AuthPage = () => {
         {/* Logo */}
         <div className="text-center">
           <Link to="/" className="text-3xl font-bold text-primary">
-            FreelanceNest
+            NextGig
           </Link>
           <p className="mt-2 text-muted-foreground">
             Welcome back! Please sign in to your account.
@@ -159,7 +159,7 @@ const AuthPage = () => {
               <CardHeader>
                 <CardTitle>Create your account</CardTitle>
                 <CardDescription>
-                  Join FreelanceNest as a {role}
+                  Join NextGig as a {role}
                 </CardDescription>
               </CardHeader>
               <CardContent>

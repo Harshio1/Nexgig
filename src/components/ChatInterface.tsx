@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Send, Paperclip, Smile, MoreVertical, Phone, Video, Search } from "lucide-react";
 import { FileUpload } from "./FileUpload";
+import { freelancerChats, clientChats, freelancerMessages, clientMessages } from "@/data/mockChats";
 
 interface Message {
   id: string;
@@ -35,48 +36,34 @@ interface ChatInterfaceProps {
   activeChat?: string;
   onChatSelect: (chatId: string) => void;
   className?: string;
+  userType?: "freelancer" | "client";
 }
 
-export const ChatInterface = ({ chats, activeChat, onChatSelect, className = "" }: ChatInterfaceProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content: "Hi! I'm interested in your React project. I have 5+ years of experience with React and TypeScript.",
-      sender: "other",
-      timestamp: new Date(Date.now() - 3600000),
-      type: "text"
-    },
-    {
-      id: "2", 
-      content: "That sounds great! Could you share some examples of your previous work?",
-      sender: "user",
-      timestamp: new Date(Date.now() - 3000000),
-      type: "text"
-    },
-    {
-      id: "3",
-      content: "Absolutely! Here's my portfolio with some recent React projects.",
-      sender: "other", 
-      timestamp: new Date(Date.now() - 2400000),
-      type: "text"
-    },
-    {
-      id: "4",
-      content: "I'm also attaching my proposal document for your review.",
-      sender: "other",
-      timestamp: new Date(Date.now() - 2400000),
-      type: "file",
-      fileName: "project-proposal.pdf"
-    }
-  ]);
-  
+export const ChatInterface = ({ chats, activeChat, onChatSelect, className = "", userType = "freelancer" }: ChatInterfaceProps) => {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showFileUpload, setShowFileUpload] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Get messages based on user type and active chat
+  useEffect(() => {
+    if (activeChat) {
+      const messageData = userType === "freelancer" ? freelancerMessages : clientMessages;
+      setMessages(messageData[activeChat] || []);
+    }
+  }, [activeChat, userType]);
+
   const selectedChat = chats.find(chat => chat.id === activeChat);
+  
+  // Filter chats based on search term
+  const filteredChats = chats.filter(chat => 
+    chat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    chat.lastMessage.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (chat.jobTitle && chat.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -104,10 +91,22 @@ export const ChatInterface = ({ chats, activeChat, onChatSelect, className = "" 
     setIsTyping(true);
     setTimeout(() => {
       setIsTyping(false);
-      // Simulate response
+      // Simulate realistic response based on user type
+      const responses = userType === "freelancer" ? [
+        "Thanks for your message! I'll review the requirements and get back to you.",
+        "Great! I'm available for a call this week to discuss the project details.",
+        "I've uploaded the latest version. Please let me know your feedback!",
+        "Perfect! I'll send you the revised proposal by tomorrow."
+      ] : [
+        "Thanks for the update! The progress looks excellent so far.",
+        "I'm impressed with the quality of work. Keep it up!",
+        "Could you provide an estimated timeline for completion?",
+        "Let's schedule a review meeting to discuss next steps."
+      ];
+      
       const response: Message = {
         id: (Date.now() + 1).toString(),
-        content: "Thanks for your message! I'll get back to you shortly.",
+        content: responses[Math.floor(Math.random() * responses.length)],
         sender: "other",
         timestamp: new Date(),
         type: "text"
@@ -152,13 +151,15 @@ export const ChatInterface = ({ chats, activeChat, onChatSelect, className = "" 
           </div>
           <Input
             placeholder="Search conversations..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="transition-all duration-200 focus:shadow-glow"
           />
         </div>
         
         <ScrollArea className="h-[calc(600px-120px)]">
           <div className="p-2">
-            {chats.map((chat) => (
+            {filteredChats.map((chat) => (
               <Card
                 key={chat.id}
                 className={`mb-2 cursor-pointer transition-all duration-200 hover:shadow-card ${
@@ -233,10 +234,24 @@ export const ChatInterface = ({ chats, activeChat, onChatSelect, className = "" 
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => {
+                      // Simulate call functionality
+                      alert(`Calling ${selectedChat.name}...`);
+                    }}
+                  >
                     <Phone className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="sm">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => {
+                      // Simulate video call functionality
+                      alert(`Starting video call with ${selectedChat.name}...`);
+                    }}
+                  >
                     <Video className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="sm">
@@ -301,7 +316,18 @@ export const ChatInterface = ({ chats, activeChat, onChatSelect, className = "" 
                   maxFiles={3}
                   maxSize={10}
                   onFileUpload={(files) => {
-                    console.log("Files uploaded:", files);
+                    // Add file message to chat
+                    files.forEach((file) => {
+                      const fileMessage: Message = {
+                        id: Date.now().toString(),
+                        content: `Uploaded file: ${file.name}`,
+                        sender: "user",
+                        timestamp: new Date(),
+                        type: "file",
+                        fileName: file.name
+                      };
+                      setMessages(prev => [...prev, fileMessage]);
+                    });
                     setShowFileUpload(false);
                   }}
                 />

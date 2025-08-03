@@ -159,7 +159,7 @@ const FreelancerDashboard = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <Link to="/" className="text-2xl font-bold text-primary">
-              FreelanceNest
+              NextGig
             </Link>
             <div className="flex items-center space-x-4">
               <Link to="/jobs">
@@ -190,12 +190,11 @@ const FreelancerDashboard = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="proposals">My Proposals</TabsTrigger>
             <TabsTrigger value="jobs">Active Jobs</TabsTrigger>
             <TabsTrigger value="earnings">Earnings</TabsTrigger>
-            <TabsTrigger value="messages">Messages</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -423,46 +422,33 @@ const FreelancerDashboard = () => {
                 <CardDescription>Your payment history and upcoming payouts</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <TrendingUp className="h-12 w-12 mx-auto mb-4" />
-                  <p>Earnings chart and history will be displayed here</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Messages Tab */}
-          <TabsContent value="messages" className="space-y-6">
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle>Messages</CardTitle>
-                <CardDescription>All your conversations with clients</CardDescription>
-              </CardHeader>
-              <CardContent>
                 <div className="space-y-4">
-                  {recentMessages.map((message) => (
-                    <Card key={message.id} className="border hover:bg-muted/50 transition-colors cursor-pointer">
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-foreground">{message.client}</div>
-                              <div className="text-xs text-muted-foreground">{message.time}</div>
-                            </div>
-                            <div className="text-sm text-muted-foreground mb-1">{message.project}</div>
-                            <div className="text-sm text-foreground">{message.lastMessage}</div>
-                          </div>
-                          {message.unread && (
-                            <div className="ml-4 h-2 w-2 bg-primary rounded-full"></div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
+                  {[
+                    { project: "Mobile App UI/UX Design", client: "StartupXYZ", amount: "$1,800", date: "Jan 15, 2024", status: "Completed" },
+                    { project: "Brand Identity Design", client: "Creative Agency", amount: "$1,200", date: "Jan 10, 2024", status: "Completed" },
+                    { project: "Python Data Analysis", client: "DataCorp", amount: "$900", date: "Jan 5, 2024", status: "In Progress" },
+                    { project: "E-commerce Website", client: "RetailMart", amount: "$4,200", date: "Dec 28, 2023", status: "Completed" },
+                    { project: "Content Writing", client: "TechBlog Pro", amount: "$650", date: "Dec 20, 2023", status: "Completed" }
+                  ].map((payment, index) => (
+                    <div key={index} className="flex items-center justify-between p-4 border border-border rounded-lg">
+                      <div className="flex-1">
+                        <div className="font-medium text-foreground">{payment.project}</div>
+                        <div className="text-sm text-muted-foreground">Client: {payment.client}</div>
+                        <div className="text-sm text-muted-foreground">Date: {payment.date}</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold text-lg text-accent">{payment.amount}</div>
+                        <Badge variant={payment.status === "Completed" ? "default" : "secondary"}>
+                          {payment.status}
+                        </Badge>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
+
         </Tabs>
       </div>
     </div>
