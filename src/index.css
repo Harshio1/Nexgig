@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FreelanceNest Design System - Slumber Theme */
+@layer base {
+  :root {
+    /* Slumber Theme Colors */
+    --background: 200 42% 8%;          /* #051622 - Dark navy background */
+    --foreground: 35 24% 77%;          /* #deb992 - Cream text */
+
+    --card: 200 42% 12%;               /* Slightly lighter than background for cards */
+    --card-foreground: 35 24% 77%;     /* #deb992 - Cream text on cards */
+
+    --popover: 200 42% 10%;
+    --popover-foreground: 35 24% 77%;
+
+    --primary: 177 82% 42%;            /* #1ba098 - Teal accent for buttons/highlights */
+    --primary-foreground: 200 42% 8%;  /* Dark text on teal buttons */
+
+    --secondary: 200 42% 15%;          /* Subtle secondary elements */
+    --secondary-foreground: 35 24% 77%;
+
+    --muted: 200 42% 14%;              /* Muted backgrounds */
+    --muted-foreground: 35 15% 60%;    /* Muted text */
+
+    --accent: 177 82% 42%;             /* #1ba098 - Teal accents */
+    --accent-foreground: 200 42% 8%;
+
+    --destructive: 0 84% 60%;          /* Red for destructive actions */
+    --destructive-foreground: 35 24% 77%;
+
+    --border: 200 25% 20%;             /* Subtle borders */
+    --input: 200 25% 18%;              /* Input backgrounds */
+    --ring: 177 82% 42%;               /* Teal focus rings */
+
+    /* Status Colors */
+    --success: 142 71% 45%;            /* Green for success */
+    --warning: 45 93% 47%;             /* Yellow for warnings */
+    --info: 217 91% 60%;               /* Blue for info */
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(200 42% 8%), hsl(200 42% 12%));
+    --gradient-card: linear-gradient(135deg, hsl(200 42% 12%), hsl(200 42% 15%));
+    --gradient-accent: linear-gradient(135deg, hsl(177 82% 42%), hsl(177 82% 48%));
+
+    /* Shadows */
+    --shadow-card: 0 4px 6px -1px hsl(200 42% 4% / 0.3), 0 2px 4px -1px hsl(200 42% 4% / 0.2);
+    --shadow-hover: 0 10px 15px -3px hsl(200 42% 4% / 0.4), 0 4px 6px -2px hsl(200 42% 4% / 0.3);
+    --shadow-glow: 0 0 20px hsl(177 82% 42% / 0.3);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer components {
+  /* Custom component styles */
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+  
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-hover {
+    box-shadow: var(--shadow-hover);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+}
+
+@layer utilities {
+  .text-success {
+    color: hsl(var(--success));
+  }
+  
+  .text-warning {
+    color: hsl(var(--warning));
+  }
+  
+  .text-info {
+    color: hsl(var(--info));
+  }
+  
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+  
+  .bg-warning {
+    background-color: hsl(var(--warning));
+  }
+  
+  .bg-info {
+    background-color: hsl(var(--info));
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
