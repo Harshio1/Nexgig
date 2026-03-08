@@ -1,11 +1,14 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { serve } from '@hono/node-server'
+
 import { authRouter } from './routes/auth'
 import { jobsRouter } from './routes/jobs'
 import { chatsRouter } from './routes/chats'
+import { overviewRouter } from './routes/overview'
+
 import { loadEnv } from './env'
 import { ensureSchema, getPool } from './db'
-import { overviewRouter } from './routes/overview'
 
 loadEnv()
 
@@ -36,11 +39,10 @@ ensureSchema()
     console.error('Database initialization failed:', err?.message || err)
   })
 
-console.log(`Nexgig API listening on http://localhost:${port}`)
-
-export default {
+// Start server
+serve({
   fetch: app.fetch,
-  port,
-}
+  port: port,
+})
 
-
+console.log(`Nexgig API listening on port ${port}`)
