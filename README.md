@@ -48,7 +48,8 @@ The MySQL database (`nexgig`) contains the following tables:
 ## Screenshots
 
 ### Landing Page
-<img width="2879" height="1427" alt="Screenshot 2025-10-31 231117" src="https://github.com/user-attachments/assets/fd494720-8a15-4bcf-9020-24ef146e9711" />
+<img width="2879" height="1375" alt="Screenshot 2025-10-31 231117" src="https://github.com/user-attachments/assets/d26cef0b-15b0-473c-b685-8e647367c593" />
+
 
 
 ### Auth — Login & Role Selection
@@ -60,7 +61,8 @@ The MySQL database (`nexgig`) contains the following tables:
 
 
 ### Job Detail & Proposal Submission
-<img width="2865" height="1549" alt="Screenshot 2025-10-31 231740" src="https://github.com/user-attachments/assets/26e29fbc-0a2a-4e17-a7eb-a0b02995f1b4" />
+<img width="2865" height="1446" alt="Screenshot 2025-10-31 231740" src="https://github.com/user-attachments/assets/55e9ae16-c9c9-4a44-ace3-4b8c3d620361" />
+
 
 
 ### Client Dashboard — Overview
