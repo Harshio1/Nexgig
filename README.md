@@ -74,7 +74,8 @@ The MySQL database (`nexgig`) contains the following tables:
 
 
 ### Client View — Accepted Proposal
-<img width="2876" height="1542" alt="Screenshot 2025-10-31 231703" src="https://github.com/user-attachments/assets/ac7cf11d-507c-4874-bc27-9c558a202161" />
+<img width="2876" height="1400" alt="Screenshot 2025-10-31 231703" src="https://github.com/user-attachments/assets/7bcbb848-27ab-4dd4-89ca-9b582e2d9bcd" />
+
 
 ---
 
