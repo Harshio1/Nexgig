@@ -3,7 +3,8 @@
 A full-stack freelancing platform that connects clients and freelancers, enabling job posting, proposal submission, and project management.
 
 ---
-
+## 🚀 Try it online
+👉 [nexgig-lime.vercel.app](https://nexgig-lime.vercel.app)
 ## Features
 
 ### For Freelancers
