@@ -35,6 +35,7 @@ const App = () => (
          
           <Route path="/review/:id" element={<ReviewPage />} />
           <Route path="/client-dashboard/jobs/:id" element={<ProtectedRoute roles={["client"]}><ClientJobDetails /></ProtectedRoute>} />
+          <Route path="/chat" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
