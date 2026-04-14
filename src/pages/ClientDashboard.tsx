@@ -258,38 +258,6 @@ const ClientDashboard = () => {
             </Dialog>
           </TabsContent>
 
-          {/* Messages Tab */}
-          <TabsContent value="messages" className="space-y-6">
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle>Messages</CardTitle>
-                <CardDescription>All your conversations</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentMessages.map((message) => (
-                    <Card key={message.id} className="border hover:bg-muted/50 transition-colors cursor-pointer">
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-foreground">{message.freelancer}</div>
-                              <div className="text-xs text-muted-foreground">{message.time}</div>
-                            </div>
-                            <div className="text-sm text-muted-foreground mb-1">{message.project}</div>
-                            <div className="text-sm text-foreground">{message.lastMessage}</div>
-                          </div>
-                          {message.unread && (
-                            <div className="ml-4 h-2 w-2 bg-primary rounded-full"></div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">

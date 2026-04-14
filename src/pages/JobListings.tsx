@@ -43,9 +43,6 @@ const JobListings = () => {
               <Link to="/freelancer-dashboard">
                 <Button variant="outline">Dashboard</Button>
               </Link>
-              <Link to="/chat">
-                <Button variant="outline">Messages</Button>
-              </Link>
               <Button variant="default">Profile</Button>
             </div>
           </div>

@@ -84,12 +84,6 @@ const FreelancerDashboard = () => {
                 <Search className="mr-2 h-4 w-4" />
                 Find Work
               </Button>
-              <Link to="/chat">
-                <Button variant="outline">
-                  <MessageCircle className="mr-2 h-4 w-4" />
-                  Messages
-                </Button>
-              </Link>
               <div className="flex items-center space-x-2">
                 <User className="h-5 w-5 text-muted-foreground" />
                 <span className="text-sm font-medium">{user?.name || user?.email}</span>
