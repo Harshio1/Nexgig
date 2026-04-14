@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import { serve } from '@hono/node-server'
 
 import { authRouter } from './routes/auth'
 import { jobsRouter } from './routes/jobs'
@@ -15,7 +14,12 @@ loadEnv()
 const app = new Hono().basePath('/api')
 
 app.use('*', cors({
-  origin: (origin) => origin ?? '*',
+  origin: (origin) => {
+    // List of allowed origins
+    const allowed = ['http://localhost:8080', 'https://nexgig-lime.vercel.app']
+    if (allowed.includes(origin ?? '')) return origin
+    return 'https://nexgig-lime.vercel.app' // Default fallback
+  },
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   credentials: true,
@@ -40,9 +44,9 @@ ensureSchema()
   })
 
 // Start server
-serve({
-  fetch: app.fetch,
+export default {
   port: port,
-})
+  fetch: app.fetch,
+}
 
 console.log(`Nexgig API listening on port ${port}`)
