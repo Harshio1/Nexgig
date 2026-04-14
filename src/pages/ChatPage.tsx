@@ -37,6 +37,9 @@ const ChatPage = () => {
   });
   const messages = messagesData?.messages ?? [];
 
+  const { data: userData } = useQuery({ queryKey: ['me'], queryFn: apiMe });
+  const currentUser = userData?.user;
+
   const qc = useQueryClient();
   const sendMutation = useMutation({
     mutationFn: (text: string) => apiSendMessage(selectedChat as number, text),
@@ -65,7 +68,7 @@ const ChatPage = () => {
               FreelanceNest
             </Link>
             <div className="flex items-center space-x-4">
-              <Link to="/freelancer-dashboard">
+              <Link to={currentUser?.role === 'client' ? '/client-dashboard' : '/freelancer-dashboard'}>
                 <Button variant="outline">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Dashboard
@@ -104,11 +107,8 @@ const ChatPage = () => {
                   <div className="relative">
                     <Avatar className="h-12 w-12">
                       <AvatarImage src={chat.avatar} />
-                      <AvatarFallback>{chat.name.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>{chat.name?.charAt(0) || 'U'}</AvatarFallback>
                     </Avatar>
-                    {chat.online && (
-                      <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-success rounded-full border-2 border-background"></div>
-                    )}
                   </div>
                   
                   <div className="flex-1 min-w-0">
@@ -121,15 +121,6 @@ const ChatPage = () => {
                       <Badge variant="outline" className="text-xs">
                         {chat.role}
                       </Badge>
-                      {chat.unread > 0 && (
-                        <div className="bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {chat.unread}
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="text-sm text-muted-foreground mt-1 truncate">
-                      {chat.jobTitle}
                     </div>
                     
                     <div className="text-sm text-foreground mt-1 truncate">
@@ -149,18 +140,22 @@ const ChatPage = () => {
               {/* Chat Header */}
               <div className="p-4 border-b border-border bg-card">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="relative">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src={'/placeholder.svg'} />
-                        <AvatarFallback>{String(selectedChat).charAt(0)}</AvatarFallback>
-                      </Avatar>
-                    </div>
-                    <div>
-                      <div className="font-medium text-foreground">Chat #{selectedChat}</div>
-                      <div className="text-sm text-muted-foreground">Conversation</div>
-                    </div>
-                  </div>
+                  {(() => {
+                    const currentChatDetails = chats.find(c => c.id === selectedChat);
+                    return (
+                      <div className="flex items-center space-x-3">
+                        <div className="relative">
+                          <Avatar className="h-10 w-10">
+                            <AvatarFallback>{currentChatDetails?.name?.charAt(0) || 'U'}</AvatarFallback>
+                          </Avatar>
+                        </div>
+                        <div>
+                          <div className="font-medium text-foreground">{currentChatDetails?.name || `Chat #${selectedChat}`}</div>
+                          <div className="text-sm text-muted-foreground">{currentChatDetails?.role || 'Conversation'}</div>
+                        </div>
+                      </div>
+                    );
+                  })()}
                   
                   <div className="flex items-center space-x-2">
                     <Button variant="outline" size="sm">
@@ -178,20 +173,23 @@ const ChatPage = () => {
 
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {messages.map((message) => (
-                  <div key={message.id} className={`flex ${false ? "justify-end" : "justify-start"}`}>
-                    <div className={`max-w-xs lg:max-w-md ${false ? "order-2" : "order-1"}`}>
-                      <div
-                        className={`rounded-lg px-4 py-2 bg-muted text-foreground`}
-                      >
-                        <p className="text-sm">{message.text}</p>
-                      </div>
-                      <div className={`text-xs text-muted-foreground mt-1 text-left`}>
-                        {formatTime(message.createdAt)}
+                {messages.map((message) => {
+                  const isMine = String(message.senderId) === String(currentUser?.id);
+                  return (
+                    <div key={message.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
+                      <div className={`max-w-xs lg:max-w-md ${isMine ? "order-2" : "order-1"}`}>
+                        <div
+                          className={`rounded-lg px-4 py-2 ${isMine ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}
+                        >
+                          <p className="text-sm">{message.text}</p>
+                        </div>
+                        <div className={`text-xs text-muted-foreground mt-1 ${isMine ? "text-right" : "text-left"}`}>
+                          {formatTime(message.createdAt)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
                 
                 {/* Typing Indicator */}
                 {isTyping && (

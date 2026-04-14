@@ -6,21 +6,31 @@ export const chatsRouter = new Hono()
 
 chatsRouter.use('*', authMiddleware)
 
-// List chats for the current user (last message preview)
+// List chats for the current user (last message preview + participant details)
 chatsRouter.get('/', async (c) => {
   const user = getUser(c)!
   const [rows] = await getPool().query(
     `SELECT ch.id,
             MAX(ms.created_at) AS last_ts,
-            SUBSTRING_INDEX(MAX(CONCAT(ms.created_at, '||', ms.text)), '||', -1) AS lastMessage
+            SUBSTRING_INDEX(MAX(CONCAT(ms.created_at, '||', ms.text)), '||', -1) AS lastMessage,
+            u_other.name as other_name,
+            u_other.role as other_role
        FROM chats ch
-       JOIN chat_participants cp ON cp.chat_id = ch.id AND cp.user_id = ?
+       JOIN chat_participants cp_me ON cp_me.chat_id = ch.id AND cp_me.user_id = ?
+       JOIN chat_participants cp_other ON cp_other.chat_id = ch.id AND cp_other.user_id <> ?
+       JOIN users u_other ON u_other.id = cp_other.user_id
   LEFT JOIN messages ms ON ms.chat_id = ch.id
-   GROUP BY ch.id
+   GROUP BY ch.id, u_other.name, u_other.role
    ORDER BY (MAX(ms.created_at) IS NULL) ASC, last_ts DESC, ch.id DESC`,
-    [Number(user.sub)]
+    [Number(user.sub), Number(user.sub)]
   )
-  const chats = (rows as any[]).map((r) => ({ id: r.id, lastMessage: r.lastMessage ?? '', updatedAt: r.last_ts ? new Date(r.last_ts).getTime() : Date.now() }))
+  const chats = (rows as any[]).map((r) => ({ 
+    id: r.id, 
+    name: r.other_name || 'User',
+    role: r.other_role || 'Participant',
+    lastMessage: r.lastMessage ?? '', 
+    updatedAt: r.last_ts ? new Date(r.last_ts).getTime() : Date.now() 
+  }))
   return c.json({ chats })
 })
 

@@ -224,13 +224,26 @@ jobsRouter.patch('/proposals/:id/accept', authMiddleware, async (c) => {
   if (Number(proposal.client_id) !== Number(user.sub)) return c.json({ error: 'Forbidden' }, 403)
   // Update proposal status to accepted
   await getPool().query('UPDATE proposals SET status = ? WHERE id = ?', ['accepted', proposalId])
-  // Create assignment record
+  
+  // Create assignment record and CHAT
   const [jobRows] = await getPool().query('SELECT job_id, freelancer_id FROM proposals WHERE id = ?', [proposalId])
-  const job = Array.isArray(jobRows) && jobRows.length ? (jobRows as any)[0] : null
-  if (job) {
+  const proposalData = Array.isArray(jobRows) && jobRows.length ? (jobRows as any)[0] : null
+  
+  if (proposalData) {
+    // 1. Create assignment
     await getPool().query(
       'INSERT INTO assignments (job_id, freelancer_id) VALUES (?, ?)',
-      [job.job_id, job.freelancer_id]
+      [proposalData.job_id, proposalData.freelancer_id]
+    )
+    
+    // 2. Create Chat and Participants
+    const [chatRes] = await getPool().query('INSERT INTO chats (updated_at) VALUES (CURRENT_TIMESTAMP)')
+    const chatId = (chatRes as any).insertId
+    
+    // Add Client and Freelancer as participants
+    await getPool().query(
+      'INSERT INTO chat_participants (chat_id, user_id) VALUES (?, ?), (?, ?)',
+      [chatId, Number(user.sub), chatId, Number(proposalData.freelancer_id)]
     )
   }
   return c.json({ ok: true })
