@@ -15,10 +15,19 @@ const app = new Hono().basePath('/api')
 
 app.use('*', cors({
   origin: (origin) => {
-    // List of allowed origins
-    const allowed = ['http://localhost:8080', 'https://nexgig-lime.vercel.app']
-    if (allowed.includes(origin ?? '')) return origin
-    return 'https://nexgig-lime.vercel.app' // Default fallback
+    const allowed = [
+      'http://localhost:8080',
+      'https://nexgig-lime.vercel.app'
+    ]
+    if (!origin) return allowed[0]
+    
+    // Allow any Vercel preview link for this project
+    if (origin.endsWith('.vercel.app') && origin.includes('nexgig')) {
+      return origin
+    }
+    
+    if (allowed.includes(origin)) return origin
+    return allowed[1]
   },
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
