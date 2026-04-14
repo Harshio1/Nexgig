@@ -129,12 +129,4 @@ CREATE DATABASE nexgig;
 USE nexgig;
 -- then run your schema SQL file
 ```
-
----
-
-## Deployment
-
-The website is deployed on [Railway](https://railway.app) at:  
-`https://nexgig-production.up.railway.app`
-
 ---
